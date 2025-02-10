@@ -44,32 +44,41 @@ namespace LibraryAPI.Controllers
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(int id, Book book)
+        public async Task<IActionResult> PutBook(int id, UpdateBookDTO updateBookDTO)
         {
-            if (id != book.Id)
-            {
-                return BadRequest();
-            }
 
-            _context.Entry(book).State = EntityState.Modified;
+            Book existingBook = _context.Books.FirstOrDefault(x => id == x.Id);
 
-            try
+            if (existingBook != null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
+                existingBook.Author = updateBookDTO.Author;
+                existingBook.Title = updateBookDTO.Title;
+                existingBook.PublishedYear = updateBookDTO.PublishedYear;
+                existingBook.Genre = updateBookDTO.Genre;
+                existingBook.Price = updateBookDTO.Price;
+
+                _context.Entry(existingBook).State = EntityState.Modified;
+
+                try
                 {
-                    return NotFound();
+                    await _context.SaveChangesAsync();
+                    return Ok(existingBook);
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!BookExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-            }
 
-            return NoContent();
+                return NoContent();
+            }
+            return BadRequest();
         }
 
         // POST: api/Books

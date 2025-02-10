@@ -85,8 +85,8 @@
         "IsRequired": true
       },
       {
-        "Name": "book",
-        "Type": "LibraryAPI.Models.Book",
+        "Name": "updateBookDTO",
+        "Type": "LibraryAPI.Models.UpdateBookDTO",
         "IsRequired": true
       }
     ],
