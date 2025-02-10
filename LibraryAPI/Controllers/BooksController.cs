@@ -75,21 +75,28 @@ namespace LibraryAPI.Controllers
                         throw;
                     }
                 }
-
-                return NoContent();
             }
-            return BadRequest();
+            return NoContent();
         }
 
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        public async Task<ActionResult<Book>> PostBook(AddBookDTO addBookDTO)
         {
-            _context.Books.Add(book);
+            Book newBook = new Book
+            {
+                Title = addBookDTO.Title,
+                Author = addBookDTO.Author,
+                Price = addBookDTO.Price,
+                Genre = addBookDTO.Genre,
+                PublishedYear = addBookDTO.PublishedYear
+            };
+
+            _context.Books.Add(newBook);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return CreatedAtAction("GetBook", new { id = newBook.Id }, newBook);
         }
 
         // DELETE: api/Books/5

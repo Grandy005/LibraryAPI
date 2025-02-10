@@ -28,8 +28,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "book",
-        "Type": "LibraryAPI.Models.Book",
+        "Name": "addBookDTO",
+        "Type": "LibraryAPI.Models.AddBookDTO",
         "IsRequired": true
       }
     ],
